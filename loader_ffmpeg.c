@@ -1,8 +1,10 @@
-/* File: loader_webp.c
+/* File: loader_ffmpeh.c
    Time-stamp: <2012-12-09 21:19:30 gawen>
 
    Copyright (c) 2011 David Hauweele <david@hauweele.net>
    All rights reserved.
+   
+   Modified by Vitaly "_Vi" Shukela to use ffmpeg instead of webp.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions
