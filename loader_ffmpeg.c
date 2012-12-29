@@ -229,7 +229,7 @@ char load(ImlibImage * im, ImlibProgressFunction progress,
       
       retret = 1;
       if(progress)
-        progress(im, 100, 0, 0, 0, 0);
+        progress(im, 100, 0, 0, w, h);
     }
     
     avcodec_free_frame(&frame); 
