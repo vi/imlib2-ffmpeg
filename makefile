@@ -2,7 +2,7 @@ include commands.mk
 
 OPTS    := -O2
 CFLAGS  := -std=c99 $(OPTS) $(shell imlib2-config --cflags) -fPIC -Wall
-LDFLAGS := $(shell imlib2-config --libs) -lwebp
+LDFLAGS := $(shell imlib2-config --libs) -lavcodec -lavformat -lswscale
 
 SRC = $(wildcard *.c)
 OBJ = $(foreach obj, $(SRC:.c=.o), $(notdir $(obj)))
@@ -17,9 +17,9 @@ endif
 
 .PHONY: all clean
 
-all: webp.so
+all: ffmpeg.so
 
-webp.so: $(OBJ)
+ffmpeg.so: $(OBJ)
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
@@ -28,13 +28,13 @@ webp.so: $(OBJ)
 clean:
 	$(RM) $(DEP)
 	$(RM) $(OBJ)
-	$(RM) webp.so
+	$(RM) ffmpeg.so
 
 install:
 	$(INSTALL_DIR) $(DESTDIR)$(LOADERDIR)
-	$(INSTALL_LIB) webp.so $(DESTDIR)$(LOADERDIR)
+	$(INSTALL_LIB) ffmpeg.so $(DESTDIR)$(LOADERDIR)
 
 uninstall:
-	$(RM) $(PLUGINDIR)/webp.so
+	$(RM) $(PLUGINDIR)/ffmpeg.so
 
 -include $(DEP)
