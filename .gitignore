@@ -1,0 +1,7 @@
+ffmpeg.so
+*.d
+*.o
+*.mkv
+*.ffmpeg
+*.png
+*.ts
