@@ -188,17 +188,21 @@ char load(ImlibImage * im, ImlibProgressFunction progress,
     
       fprintf(stderr, "Got frame %dx%d\n", frame->width, frame->height);
     
-      int numBytes=avpicture_get_size(PIX_FMT_RGBA, w, h);
+      int numBytes=avpicture_get_size(PIX_FMT_BGRA, w, h);
+      if (numBytes< w*h*4) {
+        fprintf(stderr, "Warning: requested buffer size appears to be too small\n");
+        numBytes = w*h*4;
+      }
       unsigned char* buffer = malloc(numBytes);
 
       // Assign appropriate parts of buffer to image planes in pFrameRGB
-      avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_RGBA, w, h);
+      avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_BGRA, w, h);
     
       struct SwsContext *img_convert_ctx = sws_alloc_context();
       img_convert_ctx = sws_getCachedContext(
         img_convert_ctx, 
         w, h, videoStream->codec->pix_fmt, 
-        w, h, PIX_FMT_RGBA, 
+        w, h, PIX_FMT_BGRA, 
         SWS_BICUBIC, NULL, NULL, NULL);
 
        if (img_convert_ctx == NULL) {
@@ -212,20 +216,7 @@ char load(ImlibImage * im, ImlibProgressFunction progress,
        (const unsigned char*const*)frame->data, frame->linesize, 0, videoStream->codec->height,
        frameRGB->data, frameRGB->linesize);
     
-      im->data = malloc(4*w*h);
-      int j;
-      for (i=0; i<w; ++i) {
-        for (j=0; j<h; ++j) {
-          int index = 4*w*j+4*i;
-          im->data[w*j+i] = 
-            (buffer[index+3]<<24)+
-            (buffer[index]<<16) + 
-            (buffer[index+1]<<8) + 
-            (buffer[index+2]<<0);
-        }
-      }
-      
-      free(buffer);
+      im->data = buffer;//malloc(4*w*h);
       
       retret = 1;
       if(progress)
