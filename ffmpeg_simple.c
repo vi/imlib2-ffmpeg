@@ -36,7 +36,9 @@ void cleanup_ffmpeg_simple_data (struct ffmpeg_simple_data *d) {
     if (d->videoStream) {
         avcodec_close(d->videoStream->codec);
     }
-    avformat_close_input(&d->pFormatCtx);
+    if (d->pFormatCtx) {
+        avformat_close_input(&d->pFormatCtx);
+    }
 }
 
 unsigned long* ffmpegsimple_readfirstframe_impl(
