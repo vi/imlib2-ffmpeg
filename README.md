@@ -10,6 +10,7 @@ decode the first frame of the given video.
 
 [imlib2-webp](http://www.hauweele.net/~gawen/imlib2-webp.html) was used as a imlib2 loader sample.
 
+Semi-static (ffmpeg compiled in) linux x86 version is [here](http://vi-server.org/pub/imlib2_loader_ffmpeg_static.so).
 
 Little bonus: simple ffmpeg usage function:
 
